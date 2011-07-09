@@ -32,23 +32,18 @@
 
 <script>
 
-// Define a "person" class that tracks its own name and children, and has a method to add a new child
-var person = function (name, children) {
-    this.name = name;
-    this.children = ko.observableArray(); 
-    this.addChild = function (name) { this.children.push({name:name}); }.bind(this);
-    for (var i=0; i < children.length; i++)
-        this.addChild(children[i]);
+var Person = function (name, children) {
+    this.name = ko.observable(name);
+    this.children = ko.observableArray(children);
+    this.addChild = function(name) { this.children.push(new Person(name)); };
 }
  
-// The view model is an abstract description of the state of the UI, but without any knowledge of the UI technology (HTML)
 var viewModel = {
     people : ko.observableArray([
-        new person("Annabelle", ["Arnie", "Anders", "Apple"]),
-        new person("Bertie", ["Boutros-Boutros", "Brianna", "Barbie", "Bee-bop"]),
-        new person("Charles", ["Cayenne", "Cleopatra"]),
-        new person("Doug", [])]
-    )
+        new Person('Annabelle', [new Person('Arnie'), new Person('Anders'), new Person('Apple')]),
+        new Person('Bertie', [new Person('Boutros-Boutros'), new Person('Brianna')]),
+        new Person('Charles', [new Person('Cayenne'), new Person('Cleopatra')])
+    ])
 };
  
 $(function()
