@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://github.com/downloads/SteveSanderson/knockout/knockout-1.2.1.js"></script>
+    <script src="template.js"></script>
+</head>
+<body>
+
+<div id="people">
+    <h2>People</h2>
+    <ul data-bind='template: {name:"personTemplate", foreach:people}' tosskids="true">
+        <li template="personTemplate">
+            <span data-bind="text:name">Dave</span> has <span data-bind="text:children().length">4</span> children:
+            <a href="#" data-bind="click:function() { this.addChild('kid ' + children().length) }">Add child</a>
+            <ul data-bind='template: {name:"childTemplate", foreach:children}' tosskids="true">
+                <li template="childTemplate" data-bind="text:name">Fred</li>
+                <li>John</li>
+            </ul>
+        </li>
+
+        <li>
+            <span>George</span> has <span>13</span> children:
+            <a href="#">Add child</a>
+            <ul>
+                <li>Foo</li>
+                </li>Bar</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<script>
+
+// Define a "person" class that tracks its own name and children, and has a method to add a new child
+var person = function (name, children) {
+    this.name = name;
+    this.children = ko.observableArray(); 
+    this.addChild = function (name) { this.children.push({name:name}); }.bind(this);
+    for (var i=0; i < children.length; i++)
+        this.addChild(children[i]);
+}
+ 
+// The view model is an abstract description of the state of the UI, but without any knowledge of the UI technology (HTML)
+var viewModel = {
+    people : ko.observableArray([
+        new person("Annabelle", ["Arnie", "Anders", "Apple"]),
+        new person("Bertie", ["Boutros-Boutros", "Brianna", "Barbie", "Bee-bop"]),
+        new person("Charles", ["Cayenne", "Cleopatra"]),
+        new person("Doug", [])]
+    )
+};
+ 
+$(function()
+{
+    if (1) // set this to 0 to see "preview" mode
+    {
+        Template.Setup();
+        ko.applyBindings(viewModel, $('#people').get(0));
+    }
+})
+
+</script>
+</body>
+
