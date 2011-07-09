@@ -16,6 +16,6 @@ The library includes a templating engine for knockout.js.
 
 ## Licence & Copyright
 
-MIT -  See [MIT-LICENSE](MIT-LICENSE)
+MIT -  See [MIT-LICENSE](jstemplate/MIT-LICENSE)
 
 
