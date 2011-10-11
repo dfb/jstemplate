@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
-    <script type="text/javascript" src="https://github.com/downloads/SteveSanderson/knockout/knockout-1.2.1.js"></script>
+    <script type="text/javascript" src="http://jshost.googlecode.com/hg/knockout-1.3pre.js"></script>
     <script src="template.js"></script>
 </head>
 <body>
@@ -12,7 +12,7 @@
     <ul data-bind='template: {name:"personTemplate", foreach:people}' tosskids="true">
         <li template="personTemplate">
             <span data-bind="text:name">Dave</span> has <span data-bind="text:children().length">4</span> children:
-            <a href="#" data-bind="click:function() { this.addChild('kid ' + children().length) }">Add child</a>
+            <a href="#" data-bind="click:addChild">Add child</a>
             <ul data-bind='template: {name:"childTemplate", foreach:children}' tosskids="true">
                 <li template="childTemplate" data-bind="text:name">Fred</li>
                 <li>John</li>
@@ -35,7 +35,7 @@
 var Person = function (name, children) {
     this.name = ko.observable(name);
     this.children = ko.observableArray(children);
-    this.addChild = function(name) { this.children.push(new Person(name)); };
+    this.addChild = function() { this.children.push(new Person('kid ' + this.children().length)); };
 }
  
 var viewModel = {
@@ -51,7 +51,7 @@ $(function()
     if (1) // set this to 0 to see "preview" mode
     {
         Template.Setup();
-        ko.applyBindings(viewModel, $('#people').get(0));
+        ko.applyBindings(viewModel);
     }
 })
 
