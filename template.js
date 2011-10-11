@@ -23,7 +23,7 @@ Template = {
     {
         // create an area to hold template objects
         Template.container = $('<div style="display:none" id="' + Template.containerID + '"></div>');
-        $('body').append(Template.container);
+        $('body').after(Template.container);
 
         // move any root objs into the template container
         Template.container.append($('[template]').detach());
@@ -36,14 +36,10 @@ Template = {
         {
             var engine = function ()
             {
-                this.renderTemplate = function (templateId, data, options)
-                {
-                    var x = Template.Create(templateId);
-                     ko.applyBindings(data, x.get(0));
-                     return x;
-                };
-                this.rewriteTemplate = function (template, rewriterCallback) { return; }
-                this.isTemplateRewritten = function (templateId) { return true; }
+                this['allowTemplateRewriting'] = false;
+                this.rewriteTemplate = function () {};
+                this.isTemplateRewritten = function () { return true; }
+                this.renderTemplate = function(template, bindingContext, options) { return Template.Create(template); };
             };
 
             engine.prototype = new ko.templateEngine();
@@ -65,4 +61,5 @@ Template = {
         }
     }
 }
+
 
